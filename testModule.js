@@ -1,6 +1,6 @@
 (function (root) {
     var app = root.app;
-    app.addModule('view', 'testModule',function(){
+    app.viewModule('testModule',function(){
         return {
             override: {
                 init:function(){

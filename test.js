@@ -1,8 +1,6 @@
 (function (root) {
     var app = root.app;
-    var View = app.getBase('view');
-
-    var view = new View();
+    var view = app.createView({modules:['testModule']});
     view.render();
     view.$el.appendTo('.container');
 

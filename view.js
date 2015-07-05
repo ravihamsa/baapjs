@@ -1,18 +1,18 @@
 (function (root) {
     var app = root.app;
 
-    var moduleIndex = {};
+
     var initMethodsList = ['init', 'loadMeta', 'beforeRender', 'render', 'afterRender'];
 
 
     var View = Backbone.View.extend({
         template: 'needs to be overridden',
-        constructor: function () {
+        constructor: function (options) {
             var _this = this;
             Backbone.View.apply(_this, arguments);
             _this._moduleIndex = {};
-            _.each(moduleIndex, function (fun, name) {
-                _this._moduleIndex[name] = fun();
+            _.each(options.modules, function (name) {
+                _this._moduleIndex[name] = app.getViewModule(name);
             })
             _this._baseInit();
         },
@@ -78,10 +78,6 @@
 
         }
     })
-
-    View.addModule = function (name, fun) {
-        moduleIndex[name] = fun;
-    }
 
     app.base('view', View)
 
