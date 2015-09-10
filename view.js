@@ -2,14 +2,33 @@
     var app = root.app;
 
 
-    var initMethodsList = ['init'];
-    var renderMethodList = ['loadMeta', 'beforeRender', 'renderTemplate', 'afterRender'];
+    var initMethodsList = ['init', 'setupModels'];
+    var renderMethodList = ['loadMeta', 'bindEvents','beforeRender', 'renderTemplate', 'afterRender'];
 
 
     var View = Backbone.View.extend({
         template: 'needs to be overridden',
+        events:{
+
+        },
+        modelEvents:{
+
+        },
+        collectionEvents:{
+
+        },
+        viewEvents:{
+
+        },
+        watcherEvents:{
+
+        },
+        appEvents:{
+
+        },
         constructor: function (options) {
             var _this = this;
+            _this.options = options;
             Backbone.View.apply(_this, arguments);
             _this._moduleIndex = {};
             _.each(options.modules, function (name) {
@@ -30,7 +49,16 @@
                 if (moduleOverride) {
                     overRiddenMethods = _.extend({}, overRiddenMethods, _.pick.apply(null, [].concat(moduleOverride).concat(methodList)));
                 }
-                var moduleChain = module.chain;
+                var moduleChain = module.chainBefore;
+                if (moduleChain) {
+                    _.each(methodList, function (methodName) {
+                        if (moduleChain[methodName]) {
+                            chainedMethods[methodName].push(moduleChain[methodName]);
+                        }
+                    });
+                }
+
+                moduleChain = module.chainAfter;
                 if (moduleChain) {
                     _.each(methodList, function (methodName) {
                         if (moduleChain[methodName]) {
@@ -93,6 +121,12 @@
 
             return def;
         },
+        setupModels: function(){
+            console.log('setupModels called');
+        },
+        bindEvents:function(){
+            console.log('bindEvents called');
+        },
         beforeRender: function () {
             console.log('beforeRender called');
         },
@@ -103,6 +137,9 @@
         renderTemplate: function () {
             console.log('renderTemplate called');
             this.$el.html('ravi kumar ha')
+        },
+        updateView: function(){
+
         },
         afterRender: function () {
             console.log('afterRender called');

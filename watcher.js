@@ -1,6 +1,6 @@
 (function (root) {
     var app = root.app;
-    app.viewModule('testModule',function(){
+    app.viewModule('watcher',function(){
         return {
             override: {
                 init:function(){
@@ -9,7 +9,7 @@
             },
             chainAfter: {
                 bindEvents:function(){
-                    console.log('chainedAfter bindEvents called');
+                    console.log('chained bindEvents called');
                 }
             }
         }
